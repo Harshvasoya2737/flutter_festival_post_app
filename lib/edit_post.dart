@@ -364,6 +364,45 @@ class _EditPostState extends State<EditPost> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 370),
+                  child: Container(
+                    height: 80,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 2,
+                          color: Colors.black54,
+                          blurRadius: 10,
+                          offset: Offset.zero,
+                        ),
+                      ]
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 150),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: Icon(
+                            Icons.save,
+                            color: Colors.white,
+                            size: 45,
+                          ),
+                        ),
+                        SizedBox(width: 50),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: Icon(
+                            Icons.share,
+                            color: Colors.white,
+                            size: 45,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             )
           ],

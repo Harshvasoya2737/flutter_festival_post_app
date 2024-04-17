@@ -11,6 +11,24 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   bool isGrid = true;
+  String searchText = '';
+  List<Map<String, dynamic>> Products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filterProducts('');
+  }
+
+  void filterProducts(String query) {
+    setState(() {
+      searchText = query.toLowerCase();
+     Products = product.where((item) {
+        final text = item['text'].toString().toLowerCase();
+        return text.contains(searchText);
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +71,7 @@ class _HomepageState extends State<Homepage> {
                     padding: const EdgeInsets.only(bottom: 100),
                     child: IconButton(
                       onPressed: () {},
-                      icon: Icon(Icons.account_circle_outlined),
+                      icon: Icon(Icons.ac_unit_rounded),
                       color: Colors.white,
                     ),
                   )
@@ -61,6 +79,20 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
             SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value) {
+                  filterProducts(value);
+                },
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.search),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
             isGrid ? buildGridProducts() : buildListProducts(),
             SizedBox(height: 20),
           ],
@@ -70,205 +102,77 @@ class _HomepageState extends State<Homepage> {
   }
 
   Widget buildGridProducts() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              buildProductContainer(product[0]),
-              buildProductContainer(product[1]),
-            ],
-          ),
-          SizedBox(height: 20),
-          Row(
-            children: [
-              buildProductContainer(product[2]),
-              buildProductContainer(product[3]),
-            ],
-          ),
-          SizedBox(height: 20),
-          Row(
-            children: [
-              buildProductContainer(product[4]),
-              buildProductContainer(product[5]),
-            ],
-          ),
-          SizedBox(height: 20),
-          Row(
-            children: [
-              buildProductContainer(product[6]),
-              buildProductContainer(product[7]),
-            ],
-          ),
-          SizedBox(height: 20),
-          Row(
-            children: [
-              buildProductContainer(product[8]),
-              buildProductContainer(product[9]),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (var i = 0; i < Products.length && i < 2; i++)
+              buildProductContainer(Products[i]),
+          ],
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (var i = 2; i < Products.length && i < 4; i++)
+              buildProductContainer(Products[i]),
+          ],
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (var i = 4; i < Products.length && i < 6; i++)
+              buildProductContainer(Products[i]),
+          ],
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (var i = 6; i < Products.length && i < 8; i++)
+              buildProductContainer(Products[i]),
+          ],
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (var i = 8; i < Products.length && i < 10; i++)
+              buildProductContainer(Products[i]),
+          ],
+        ),
+      ],
     );
   }
 
+
   Widget buildListProducts() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Container(
+    return Column(
+      children: [
+        for (var productData in Products)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
               height: 90,
               width: 400,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[0]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[0])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[1]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[1])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[2]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[2])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[3]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[3])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[4]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[4])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[5]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[5])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[6]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[6])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[7]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[7])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[8]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[8])),
-          SizedBox(height: 20),
-          Container(
-              height: 90,
-              width: 400,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(product[9]['color']),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 1,
-                        offset: Offset.zero,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal),
-                  ]),
-              child: _buildProduct(product[9])),
-        ],
-      ),
+                borderRadius: BorderRadius.circular(30),
+                color: Color(productData['color']),
+                boxShadow: [
+                  BoxShadow(
+                    spreadRadius: 1,
+                    offset: Offset.zero,
+                    blurRadius: 10,
+                    blurStyle: BlurStyle.normal,
+                  ),
+                ],
+              ),
+              child: _buildProduct(productData),
+            ),
+          ),
+      ],
     );
   }
 
@@ -358,7 +262,6 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-
   Widget _buildProduct(Map<String, dynamic> products) {
     return ListTile(
       leading: InkWell(
@@ -369,7 +272,6 @@ class _HomepageState extends State<Homepage> {
               builder: (context) => Edit(product: products),
             ),
           );
-
         },
         child: Container(
           width: 60,
@@ -395,7 +297,10 @@ class _HomepageState extends State<Homepage> {
         child: Text(
           products['texts'],
           style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       subtitle: InkWell(
@@ -410,16 +315,15 @@ class _HomepageState extends State<Homepage> {
         child: Text(
           products['title'],
           style: TextStyle(
-              color: Colors.white,
-              fontSize: 19,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'DancingScript',
+            color: Colors.white,
+            fontSize: 19,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'DancingScript',
           ),
         ),
       ),
-      onTap: () {
-
-      },
+      onTap: () {},
     );
   }
 }
+
