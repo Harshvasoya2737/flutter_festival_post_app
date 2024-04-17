@@ -35,6 +35,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
+  path_provider: ^2.1.3
+  share_plus: ^8.0.3
 
 dev_dependencies:
   flutter_test:
@@ -89,9 +91,30 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   fonts:
-    - family: Harsh
+    - family: Pacifico
       fonts:
-        - asset: assets/fonts/Jersey25-Regular.ttf
-    - family: HarshV
+        - asset: assets/fonts/Pacifico-Regular.ttf
+    - family: DancingScript
       fonts:
         - asset: assets/fonts/DancingScript-VariableFont_wght.ttf
+    - family: Teko
+      fonts:
+        - asset: assets/fonts/Teko-VariableFont_wght.ttf
+    - family: BebasNeue
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf
+    - family: Anton
+      fonts:
+        - asset: assets/fonts/Anton-Regular.ttf
+    - family: Jersey
+      fonts:
+        - asset: assets/fonts/Jersey10Charted-Regular.ttf
+    - family: Jacquard
+      fonts:
+        - asset: assets/fonts/Jacquard24-Regular.ttf
+    - family: Dosis
+      fonts:
+        - asset: assets/fonts/Dosis-VariableFont_wght.ttf
+    - family: TacOne
+      fonts:
+        - asset: assets/fonts/TacOne-Regular.ttf

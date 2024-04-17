@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_festival_post_app/edit_image.dart';
+import 'package:flutter_festival_post_app/edit_post.dart';
 import 'package:flutter_festival_post_app/home_page.dart';
 import 'package:flutter_festival_post_app/splash_screen.dart';
 
@@ -24,6 +25,9 @@ class _MyappState extends State<Myapp> {
         "splash_screen":(context)=>splashscreen(),
         "home":(context)=>Homepage(),
         "edit":(context)=>Edit(),
+        "editpost":(context)=>EditPost(),
+
+
       },
     );
   }

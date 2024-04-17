@@ -71,3 +71,14 @@ List<Map<String,dynamic>> product = [
     "title":"Click to edit your Makar Sankranti image"
   },
   ];
+List<String> fontStyle = [
+  "Teko",
+  "Pacifico",
+  "DancingScript",
+  "BebasNeue",
+  "Anton",
+  "Jersey",
+  "Jacquard",
+  "Dosis",
+  "TacOne",
+];

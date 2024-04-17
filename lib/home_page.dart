@@ -119,7 +119,7 @@ class _HomepageState extends State<Homepage> {
       child: Column(
         children: [
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -134,7 +134,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[0])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -149,7 +149,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[1])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -164,7 +164,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[2])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -179,7 +179,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[3])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -194,7 +194,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[4])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -209,7 +209,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[5])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -224,7 +224,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[6])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -239,7 +239,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[7])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -254,7 +254,7 @@ class _HomepageState extends State<Homepage> {
               child: _buildProduct(product[8])),
           SizedBox(height: 20),
           Container(
-              height: 80,
+              height: 90,
               width: 400,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -411,9 +411,9 @@ class _HomepageState extends State<Homepage> {
           products['title'],
           style: TextStyle(
               color: Colors.white,
-              fontSize: 14.5,
+              fontSize: 19,
               fontWeight: FontWeight.bold,
-              fontFamily: 'HarshV',
+              fontFamily: 'DancingScript',
           ),
         ),
       ),
