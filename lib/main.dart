@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_festival_post_app/edit_image.dart';
 import 'package:flutter_festival_post_app/edit_post.dart';
 import 'package:flutter_festival_post_app/home_page.dart';
+import 'package:flutter_festival_post_app/save.dart';
 import 'package:flutter_festival_post_app/splash_screen.dart';
 
 void main()

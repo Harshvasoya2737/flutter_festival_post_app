@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_festival_post_app/util.dart';
+import 'package:flutter_festival_post_app/save.dart';
 
 class EditPost extends StatefulWidget {
   final Map? product;
@@ -12,8 +13,10 @@ class EditPost extends StatefulWidget {
 }
 
 class _EditPostState extends State<EditPost> {
+  double zoomLevel = 1.0;
   TextEditingController titleController = TextEditingController();
   TextEditingController textController = TextEditingController();
+  TextEditingController rotationController = TextEditingController(); // New controller for rotation
   bool isAddingText = false;
   bool isMovingContainerVisible = false;
   bool isAddingTexts = false;
@@ -25,6 +28,27 @@ class _EditPostState extends State<EditPost> {
   double fontSize = 16.0;
   String selectedFontFamily = fontStyle[0];
   Color? textColor;
+  final GlobalKey _imageKey = GlobalKey();
+
+  String? selectedFrame;
+
+  void selectFrame(String frame) {
+    setState(() {
+      if (selectedFrame == frame) {
+        selectedFrame = null;
+      } else {
+        selectedFrame = frame;
+      }
+    });
+  }
+
+  Map<String, dynamic> _captureImageData() {
+    return {
+      'editedImage': widget.product!['img'],
+      'text': textController.text,
+    };
+  }
+
   Future<bool> ExitDialog(BuildContext context) async {
     return await showDialog(
       context: context,
@@ -43,7 +67,7 @@ class _EditPostState extends State<EditPost> {
         ],
       ),
     );
-  }// Dynamic text color
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +89,27 @@ class _EditPostState extends State<EditPost> {
           },
           child: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
         ),
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SaveScreen(imageData: _captureImageData(),selectedFrame: selectedFrame),
+                ),
+              );
+            },
+            child: Icon(
+              Icons.save,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(width: 50),
+          Icon(
+            Icons.share,
+            color: Colors.white,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -72,15 +117,25 @@ class _EditPostState extends State<EditPost> {
             SizedBox(height: 10),
             Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 2, top: 10),
-                  child: Image.asset(
-                    widget.product!['img'],
-                    height: 280,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                Transform.scale(
+                  scale: zoomLevel,
+                  child: GestureDetector(
+                    key: _imageKey,
+                    child: Image.asset(
+                      widget.product!['img'],
+                      fit: BoxFit.cover,
+                      width: 400,
+                    ),
                   ),
                 ),
+                if (selectedFrame != null) // Apply selected frame if available
+                  Center(
+                    child: Image.asset(
+                      selectedFrame!,
+                      fit: BoxFit.cover,
+                      width: 400,
+                    ),
+                  ),
                 if (isAddingText || isMovingContainerVisible)
                   Positioned(
                     top: textPosY,
@@ -92,40 +147,43 @@ class _EditPostState extends State<EditPost> {
                           textPosY += details.delta.dy;
                         });
                       },
-                      child: Container(
-                        height: 50,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.transparent,
-                              blurRadius: 20,
-                              spreadRadius: 5,
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: TextFormField(
-                            controller: textController,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: textColor ?? Colors.black,
-                              fontSize: fontSize,
-                              fontFamily: selectedFontFamily,
-                            ),
-                            decoration: InputDecoration(
-                              hintText: 'Enter your text',
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                      child: Transform.rotate(
+                        angle: double.tryParse(rotationController.text) ?? 0.0,
+                        child: Container(
+                          height: 50,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.transparent,
+                                blurRadius: 20,
+                                spreadRadius: 5,
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: TextFormField(
+                              controller: textController,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: textColor ?? Colors.black,
+                                fontSize: fontSize,
+                                fontFamily: selectedFontFamily,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'Enter your text',
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                if(isAddingTexts || isMoving)
+                if (isAddingTexts || isMoving)
                   Positioned(
                     top: titlePosY,
                     left: titlePosX,
@@ -175,21 +233,24 @@ class _EditPostState extends State<EditPost> {
             Stack(
               children: [
                 Container(
-                  height: 434,
+                  height: 680,
                   width: double.infinity,
                   color: Color(0xff162135),
                 ),
                 Row(
                   children: [
-                    Text(
-                      "\t\tEdit Your Image & Post",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 35,
-                        fontFamily: 'Teko',
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 8),
+                      child: Text(
+                        "Edit Your Image & Post",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35,
+                            fontFamily: 'Teko',
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(width: 150),
+                    SizedBox(width: 145),
                     InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, 'home');
@@ -342,7 +403,11 @@ class _EditPostState extends State<EditPost> {
                   padding: const EdgeInsets.only(top: 270, left: 20),
                   child: Text(
                     "Font Color",
-                    style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'BebasNeue'),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'BebasNeue'),
                   ),
                 ),
                 Padding(
@@ -365,44 +430,95 @@ class _EditPostState extends State<EditPost> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 370),
-                  child: Container(
-                    height: 80,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          spreadRadius: 2,
-                          color: Colors.black54,
-                          blurRadius: 10,
-                          offset: Offset.zero,
-                        ),
-                      ]
-                    ),
+                  padding: const EdgeInsets.only(top: 370, left: 20),
+                  child: Text(
+                    "Frame",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontFamily: 'BebasNeue',
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 420, left: 20),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: [
-                        SizedBox(width: 150),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: Icon(
-                            Icons.save,
-                            color: Colors.white,
-                            size: 45,
+                      children: frame.map((e) {
+                        return GestureDetector(
+                          onTap: () {
+                            selectFrame(e); // Update selected frame
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            margin: EdgeInsets.symmetric(horizontal: 5),
+                            decoration: BoxDecoration(
+                              color: selectedFrame == e ? Colors.blue : Colors.transparent,
+                              border: Border.all(
+                                color: selectedFrame == e ? Colors.blue : Colors.white,
+                                width: 2,
+                              ),
+                            ),
+                            child: Image.asset(
+                              e,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 50),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: Icon(
-                            Icons.share,
-                            color: Colors.white,
-                            size: 45,
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 480, left: 20),
+                  child: Text(
+                    "Zoom in & Zoom out",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontFamily: 'BebasNeue',
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 520),
+                  child: Slider(
+                    value: zoomLevel,
+                    min: 1.0,
+                    max: 5.0,
+                    onChanged: (newValue) {
+                      setState(() {
+                        zoomLevel = newValue;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 580, left: 20),
+                  child: Text(
+                    "Rotate Text",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontFamily: 'BebasNeue',
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 620),
+                  child: Slider(
+                    value: double.tryParse(rotationController.text) ?? 0.0,
+                    min: 0.0,
+                    max: 360.0,
+                    onChanged: (newValue) {
+                      setState(() {
+                        rotationController.text = newValue.toString(); // Update rotation value
+                      });
+                    },
+                  ),
+                ),
               ],
             )
           ],
