@@ -29,14 +29,6 @@ class SaveScreen extends StatelessWidget {
     );
   }
 
-  Future<void> shareImage(String imagePath, String text) async {
-    try {
-      await Share.shareFiles([imagePath], text: text);
-    } catch (e) {
-      print('Error sharing image: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final editedImage = imageData['editedImage'];
@@ -59,20 +51,6 @@ class SaveScreen extends StatelessWidget {
           },
           child: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
         ),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              final directory = await getTemporaryDirectory();
-              final imagePath = '${directory.path}/edited_image.png';
-              final File imageFile = File(imagePath);
-
-              await imageFile.writeAsBytes(await editedImage.readAsBytes());
-
-              shareImage(imagePath, text);
-            },
-            icon: Icon(Icons.share),
-          ),
-        ],
       ),
       body: Center(
         child: Column(
@@ -87,7 +65,7 @@ class SaveScreen extends StatelessWidget {
                     width: 220,
                     height: 220,
                   ),
-                  if (selectedFrame != null) // Check if a frame is selected
+                  if (selectedFrame != null)
                     Image.asset(
                       selectedFrame!,
                       fit: BoxFit.cover,
@@ -100,6 +78,40 @@ class SaveScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding:
+                EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              ),
+              onPressed: () async {
+                Directory add = await getApplicationDocumentsDirectory();
+                String myFilePath = "${add.path}/post.png";
+
+                File file = File(myFilePath);
+                if (editedImage != null) {
+                  await file.writeAsBytes(editedImage!);
+                  print(file.path);
+                  Share.shareXFiles(
+                    [
+                      XFile(file.path,),
+                    ],
+                  );
+                }
+              },
+              child: Icon(Icons.share),
+            ),
+            Text(
+              "Share",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ],
         ),
       ),
